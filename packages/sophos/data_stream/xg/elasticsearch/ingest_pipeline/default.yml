@@ -536,6 +536,13 @@ processors:
     value: "{{{file.hash.sha256}}}"
     allow_duplicates: false
 
+###################
+## Copy to Rule Action
+###################
+- set:
+    field: rule.action
+    copy_from: sophos.xg.status
+
 #############
 ## Cleanup ##
 #############
