@@ -73,6 +73,11 @@ processors:
       value: '{{host.name}}'
       allow_duplicates: false
       if: ctx.host?.name != null && ctx.host?.name != ''
+   # Extract Rule Action to a normalized field
+  - grok:
+      field: event.original
+	    patterns:
+	    - '.+ action=\\\"%{DATA:rule.action}\\\" .+'
   - remove:
       field: event.original
       if: "ctx?.tags == null || !(ctx.tags.contains('preserve_original_event'))"
