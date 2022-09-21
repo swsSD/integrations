@@ -1375,6 +1375,9 @@ processors:
       value: 'URL-filtering'
       if: 'ctx.panw?.panos?.threat?.id == "9999"'
   - set:
+      field: rule.action
+      copy_from: panw.panos.action 
+  - set:
       field: rule.name
       value: "{{panw.panos.ruleset}}"
       ignore_empty_value: true
