@@ -9,6 +9,10 @@ processors:
     value: "{{fortinet.firewall.action}}"
     ignore_empty_value: true
 - set:
+    field: rule.action
+    value: "{{fortinet.firewall.action}}"
+    ignore_empty_value: true
+- set:
     field: event.outcome
     value: success
     if: "ctx.fortinet?.firewall?.action != null"
