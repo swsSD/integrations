@@ -20,17 +20,9 @@ processors:
       field: event.original
       patterns:
         - '^(<%{NONNEGINT:log.syslog.priority:long}>%{NUMBER}?|%{SYSLOGTIMESTAMP} %{SYSLOGHOST:host.hostname} %{INT}) %{TIMESTAMP_ISO8601:_tmp.timestamp} (%{IP:observer.ip}|%{HOSTNAME:observer.hostname}) PulseSecure: - - - %{DATE2} - %{SYSLOGHOST:observer.name} - \[%{IPORHOST:client.address}\] (%{DATA}::)?(%{HOSTNAME:user.domain}\\)?%{USERNAME:user.name}?\(%{DATA:pulse_secure.realm}?\)\[%{DATA:pulse_secure.role}\] - %{GREEDYDATA:message}'
-        - '^%{NUMBER} <%{NONNEGINT:log.syslog.priority:long}>1 %{DATA} %{DATA:observer.name} %{DATA:observer.vendor}: - - - %{DATA} %{DATA} %{IP:client.ip} %{DATA:http.request.method} %{DATA:url.original} %{NUMBER:http.response.status_code} %{NUMBER:http.response.bytes}'
-        - '%{NUMBER} <%{NONNEGINT:log.syslog.priority:long}>1 %{DATA} (%{IP:destination.ip|%{DATA:destination.domain})? %{DATA:observer.vendor}: - - - %{DATA} - %{DATA:observer.name} - \[%{IP:client.ip}\] %{DATA:user.name}\((%{DATA:user.domain})?\)\[(%{DATA:user.roles})?\] - %{GREEDYDATA:event.outcome}'
-        - '^%{NUMBER} <%{NONNEGINT:log.syslog.priority:long}>1 %{DATA} (%{IP:destination.ip|%{DATA:destination.domain})? %{DATA:observer.vendor}: - - - id=%{DATA:event.provider} time=\"%{DATA:event.created}\" pri=%{NUMBER} fw=%{IP:observer.ip} vpn=%{DATA:observer.name} user=%{DATA:user.name} realm=\"%{DATA:user.domain}\" roles=\"%{DATA:user.roles}\" %{GREEDYDATA}'
       pattern_definitions:
         TIMESTAMP_ISO8601: '%{YEAR}-%{MONTHNUM}-%{MONTHDAY}[T ]%{HOUR}:?%{MINUTE}(?::?%{SECOND})?%{ISO8601_TIMEZONE:event.timezone}?'
         DATE2: '%{YEAR}-%{MONTHNUM}-%{MONTHDAY} %{HOUR}:?%{MINUTE}(?::?%{SECOND})?'
-  - grok:
-      field: url.original
-      patterns:
-        - '^.+User=%{DATA:pulse.activesync.user}\&DeviceId=%{DATA:pulse.activesync.device.id}\&DeviceType=%{DATA:pulse.activesync.device.type}\&Cmd=%{GREEDYDATA:pulse.activesync.command}'
-      ignore_missing: true
   - date:
       field: _tmp.timestamp
       target_field: '@timestamp'
